@@ -24,3 +24,20 @@ impl DivEuclidPolyfillExt for i32 {
         }
     }
 }
+
+pub(crate) trait ContainsPolyfillExt<Idx> {
+    fn contains_polyfill<U>(&self, item: &U) -> bool
+    where
+        Idx: PartialOrd<U>,
+        U: PartialOrd<Idx> + ?Sized;
+}
+
+impl<Idx> ContainsPolyfillExt<Idx> for std::ops::RangeInclusive<Idx> {
+    fn contains_polyfill<U>(&self, item: &U) -> bool
+    where
+        Idx: PartialOrd<U>,
+        U: PartialOrd<Idx> + ?Sized,
+    {
+        self.start() <= item && item <= self.end()
+    }
+}
